@@ -1,0 +1,93 @@
+{% embed 'partials/base.html.twig' %}
+
+{% set base_url = page.parent.url %}
+  {% set feed_url = base_url %}
+{% if base_url == '/' %}
+  {% set base_url = '' %}
+{% endif %}
+
+{% if base_url == base_url_relative %}
+  {% set feed_url = base_url~'/'~page.parent.slug %}
+{% endif  %}
+
+{% block content %}
+	<article class="card pure-u-1">
+		<script type="application/ld+json">
+		{
+		    "@context": "http://schema.org",
+		    "@type": "BlogPosting",
+		    "mainEntityOfPage": {
+		        "@type": "Blog",
+		        "@id": "http://www.dkcy.com"
+		    },
+		    "author": {
+		        "@type": "Person",
+		        "name":
+		        {% if page.header.author.name %}
+		            "{{ page.header.author.name }}"
+		        {% else %}
+		            "Daniel Yeo"
+		        {% endif %}
+		    },
+		    "image":
+		    {% if page.media.image|first %}
+		        "{{ page.media.image|first.url }}"
+		    {% else %}
+		        "http://www.dkcy.com{{ url('theme://images/leaf_logo.png') }}"
+		    {% endif %},
+		    "headline": "{{ page.title }}",
+		    "datePublished": "{{ page.publish_date | date ("Y-m-d-") }}",
+		    "dateModified": "{{ page.date | date ("Y-m-d-") }}",
+		    "description": "{{ page.summary | striptags }}",
+		    "publisher": {
+		        "@type": "Organization",
+		        "name": 
+		            {% if page.header.author.name %}
+		            "{{ page.header.author.name }}"
+		        {% else %}
+		            "Daniel Yeo"
+		        {% endif %},
+		        "logo": {
+		            "@type": "ImageObject",
+		            "url": "http://www.dkcy.com{{ url('theme://images/leaf_logo.png') }}"
+		        }
+		    }
+		}
+	</script>
+  	<meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="yukinosaru" />
+    <meta property="og:url" content="{{ page.url }}" />
+    <meta property="og:title" content="{{ 'SITE.TITLE'|t|e('html') }} | {{ page.title }}" />
+    <meta property="og:description" content="{{ page.summary | striptags }}" />
+    <meta property="og:image" content=
+        {% if page.media.images %}
+            "{{ page.media.images | first.url }}"
+        {% else %}
+            "http://www.dkcy.com{{  url('theme://images/leaf_logo.png')  }}"
+        {% endif %} />
+    <div class='full-item'>
+        <h1>{{ page.title }}</h1>
+        <time class="meta" datetime="{{ page.date | date("Y-m-d") }}">{{ page.date | date("d M Y") }}</time>
+        <div>
+            {{ page.content | regex_replace(['/<img src=/'], ['<img class="pure-img" src=']) }}
+        </div>
+    </div>
+    <div class='item-nav pure-g'>
+        <div class='back pure-u-1-2'>
+            {% if not page.isLast %}
+            <a rel="next" href="{{ page.prevSibling.url }}">
+                {{ page.prevSibling.header.title }}<br />&lt; Previous
+            </a>
+            {% endif %}
+        </div>
+        <div class='forward pure-u-1-2'>
+            {% if not page.isFirst %}
+            <a rel="next" href="{{ page.nextSibling.url }}">
+                {{ page.nextSibling.header.title }}<br />Next &gt;
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</article>
+{% endblock %}
+{% endembed %}

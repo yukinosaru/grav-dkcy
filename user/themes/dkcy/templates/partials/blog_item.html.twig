@@ -1,0 +1,81 @@
+<article class="card pure-u-1{% if type=='snippet' %}pure-u-md-1 pure-u-lg-1-3 {% endif %}">
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+        "@type": "Blog",
+        "@id": "http://www.dkcy.com"
+    },
+    "author": {
+        "@type": "Person",
+        "name":
+        {% if page.header.author.name %}
+            "{{ page.header.author.name }}"
+        {% else %}
+            "Daniel Yeo"
+        {% endif %}
+    },
+    "image":
+    {% if page.media.image|first %}
+        "{{ page.media.image|first.url }}"
+    {% else %}
+        "http://www.dkcy.com{{ url('theme://images/leaf_logo.png') }}"
+    {% endif %},
+    "headline": "{{ page.title }}",
+    "datePublished": "{{ page.publish_date | date ("Y-m-d-") }}",
+    "dateModified": "{{ page.date | date ("Y-m-d-") }}",
+    "description": "{{ page.summary | striptags }}",
+    "publisher": {
+        "@type": "Organization",
+        "name": 
+            {% if page.header.author.name %}
+            "{{ page.header.author.name }}"
+        {% else %}
+            "Daniel Yeo"
+        {% endif %},
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://www.dkcy.com{{ url('theme://images/leaf_logo.png') }}"
+        }
+    }
+}
+</script>
+
+{# Preview listing #}
+{# Snippet preview #}
+{% if type=='snippet' %}
+    <div class="container snippet pure-g">
+        <div class="card-image pure-u-1 pure-u-md-1-3 pure-u-lg-1-2">
+        {% if page.media.images|first %}
+            {{ page.media.images|first.cropZoom(100,100).html("","","pure-img flex-img pure-hidden-mobile") }}
+        {% else %}
+            <img class="pure-img flex-img pure-hidden-mobile" src="{{ url('theme://images/leaf_logo.png') }}" />
+        {% endif %}
+        </div>
+        <div class="card-content pure-u-1 pure-u-md-2-3 pure-u-lg-1-2">
+            <h1><a href="{{ page.url }}">{{ page.title }}</a></h1>
+            <time class="meta" datetime="{{ page.date | date("Y-m-d") }}">{{ page.date|date("d M Y") }}</time>
+            <div>{{ page.summary|striptags|truncate(220,true) }}</div>
+        </div>
+    </div>
+{% else %}
+{# Highlight preview #}
+    <div class="container highlight pure-g">
+        <div class="card-image pure-u-1 pure-u-md-1 pure-u-lg-1-3">
+        {% if page.media.images|first %}
+
+            <a href="{{ page.url }}">{{ page.media.images|first.cropZoom(400,200).html("","","pure-img flex-img") }}</a>
+        {% else %}
+            <a href="{{ page.url }}"><img class="pure-img flex-img" src="{{ url('theme://images/leaf_logo.png') }}" /></a>
+        {% endif %}
+        </div>
+        <div class="card-content pure-u-1 pure-u-md-1 pure-u-lg-2-3">
+            <h1><a href="{{ page.url }}">{{ page.title }}</a></h1>
+            <time class="meta" datetime="{{ page.date | date("Y-m-d") }}">{{ page.date|date("d M Y") }}</time>
+            <div>{{ page.summary|striptags|truncate(640,true) }}</div>
+        </div>
+    </div>        
+{% endif %}
+</article>

@@ -1,0 +1,35 @@
+title: the powder room
+description: "Wondering and wandering"
+author:
+  name: Daniel Yeo
+  email: 'me@dkcy.com'
+absolute_urls: true
+taxonomies: [category, tag]
+
+metadata:
+    description: 'Wondering and wandering.'
+
+summary:
+  size: 100
+  striptags: true
+
+# Image must be uploaded to your theme /images/ directory.
+global_featured_image: featured.jpg
+
+social:
+  - text: twitter
+    url: "http://www.twitter.com/yukinosaru"
+  - text: linkedin
+    url: "https://www.linkedin.com/in/dkcyeo"
+  - text: home
+    url: "http://www.dkcy.com"
+
+slider:
+  - image: sixt.jpg
+  - image: montblanc.jpg
+  - image: tete.jpg
+
+menu:
+  - url: error
+    text: Error Page
+

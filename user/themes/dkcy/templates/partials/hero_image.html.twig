@@ -1,0 +1,7 @@
+<section id='hero-image' class='pure-u-1'>
+	{% if page.media.images|first %}
+	{{ page.media.images|first.cropZoom(1280,450).html('','Hero image', 'pure-img')  }}
+{% else %}
+	<img src='{{ theme_url }}\images\hero_20170118_00.jpg' class='pure-img' />
+{% endif %}
+</section>
