@@ -1,0 +1,66 @@
+{% set theme_config = attribute(config.themes, config.system.pages.theme) %}
+<!DOCTYPE html>
+<html lang="{{ grav.language.getLanguage ?: 'en' }}" class='{% if browser.getBrowser == 'msie' and browser.getVersion == 7 and browser.getVersion == 8 %}{% else %}v2{% endif %} {% if browser.getBrowser == 'msie' and browser.getVersion == 7 %}ie ie7 ltie8 ltie9{% endif %} {% if browser.getBrowser == 'msie' and browser.getVersion == 8 %}ie ie8 ltie9{% endif %}'>
+<head>
+  {% block head %}
+  <meta charset="utf-8" />
+  <title>{% if header.title %}{{ header.title|e('html') }} - {% endif %}{{ 'SITE.TITLE'|t|e('html') }}</title>
+  {% include 'partials/metadata.html.twig' %}
+  <meta name="viewport" content="width=device-width">
+
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "{{ 'SITE.TITLE'|t|e('html') }}",
+    "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+    "sameAs": [
+      "https://twitter.com/intent/tweet?text=@yukinosaru",
+      "https://www.linkedin.com/in/dkcyeo",
+      "https://www.instagram.com/daniel.yeo",
+      "https://github.com/yukinosaru",
+      "http://www.dkcy.com/feed"
+      ],
+    "creator": {
+      "@type": "Person",
+      "name": "Daniel Yeo",
+      "email": "dan@dkcy.com"
+    }
+  }
+  </script>
+  
+  <link rel="icon" type="image/png" href="{{ url('theme://images/favicon.png') }}" />
+  <link rel="canonical" href="{{ page.url(true, true) }}" />
+
+  {% block stylesheet %}
+    {% do assets.addCss('https://unpkg.com/purecss@1.0.0/build/pure-min.css', 100) %}
+    {% do assets.addCss('https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css', 100) %}
+    {% do assets.addCss('https://fonts.googleapis.com/icon?family=Material+Icons|Merriweather|Poppins|Raleway|Montserrat', 100) %}
+    {% do assets.addCss('theme://css-compiled/style.css', 100) %}
+  {% endblock %}
+  {{ assets.css() }}
+
+  {% endblock head %}
+</head>
+
+<body>
+    <div class="pure-g" id="mainContent">
+          
+  {% block header %}
+    {% include 'partials/header.html.twig' %}
+  {% endblock %}
+
+  {% block body %}
+    {% block content %}{% endblock %}
+  {% endblock %}
+
+  {% block footer %}
+    {% include 'partials/footer.html.twig' %}
+  {% endblock %}
+  </div>
+  {% block javascript %}
+    {% do assets.addJs('', 100) %}
+  {% endblock %}
+  {{ assets.js() }}
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% embed 'partials/base.html.twig' %}
+{# Allows includes as well as overwriting #}
+
+{% set collection = page.collection() %}
+{% set base_url = page.url %}
+{% set feed_url = base_url %}
+
+{% if base_url == '/' %}
+{% set base_url = '' %}
+{% endif %}
+
+{% if base_url == base_url_relative %}
+{% set feed_url = base_url~'/'~page.slug %}
+{% endif  %}
+
+{% block content %}
+{{ page.content }}
+
+<script type="application/ld+json">
+{
+	"@context": "http://schema.org",
+	"@type": "Blog",
+	"mainEntityOfPage": {
+		"@type": "WebSite",
+		"@id": "http://www.dkcy.com"
+	}
+}
+</script>
+
+<section class="pure-u-1 section section-blog">
+<div class="pure-g">
+    <article class="pure-u-1 card">
+    {% for child in collection %}
+		{% if child.isFirst %}
+			{% include 'partials/blog_item.html.twig' with {'page':child,'type': 'highlight','truncate': true} %}
+		{% endif %}
+	{% endfor %}
+    </article>
+    
+	<article class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-2 card">
+		{% for child in collection %}
+			{% if child.isFirst == false %}
+				{% include 'partials/blog_item.html.twig' with {'page':child,'type': 'snippet','truncate': true} %}			
+			{% endif %}
+	    {% endfor %}
+	</article>
+    
+	<div class="pure-u-1">
+		{% if config.plugins.pagination.enabled and collection.params.pagination %}
+	    	{% include 'partials/pagination.html.twig' with {'base_url':page.url, 'pagination':collection.params.pagination} %}
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
+
+{% endembed %}

@@ -1,0 +1,74 @@
+<div class="card-content {% if type=='highlight' %}card-content-highlight{% endif %}">
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+        "@type": "Blog",
+        "@id": "http://www.dkcy.com"
+    },
+    "author": {
+        "@type": "Person",
+        "name":
+        {% if page.header.author.name %}
+            "{{ page.header.author.name }}"
+        {% else %}
+            "Daniel Yeo"
+        {% endif %}
+    },
+    "image":
+    {% if page.media.image|first %}
+        "{{ page.media.image|first.url }}"
+    {% else %}
+        "http://www.dkcy.com{{ url('theme://images/leaf_logo.png') }}"
+    {% endif %},
+    "headline": "{{ page.title }}",
+    "datePublished": "{{ page.publish_date | date ("Y-m-d-") }}",
+    "dateModified": "{{ page.date | date ("Y-m-d-") }}",
+    "description": "{{ page.summary | striptags }}",
+    "publisher": {
+        "@type": "Organization",
+        "name": 
+            {% if page.header.author.name %}
+            "{{ page.header.author.name }}"
+        {% else %}
+            "Daniel Yeo"
+        {% endif %},
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://www.dkcy.com{{ url('theme://images/leaf_logo.png') }}"
+        }
+    }
+}
+</script>
+
+{# Preview listing #}
+{# Snippet preview #}
+{% if type=='snippet' %}
+    {% if page.media.images|first %}
+        {{ page.media.images|first.cropZoom(100,100).html("","","pure-img flex-img") }}
+    {% else %}
+        <img class="pure-img flex-img" src="{{ url('theme://images/leaf_logo.png') }}" />
+    {% endif %}
+    <h2 class="blog-title"><a href="{{ page.url }}">{{ page.title }}</a></h2>
+    <time class="blog-date"  datetime="{{ page.date | date("Y-m-d") }}">
+        {{ page.date|date("d M Y") }}
+        <span class="blog-tags"> TECH</span>
+    </time>
+{% else %}
+{# Highlight preview #}
+    <div class="pure-g">
+        <div class="pure-u-1 pure-u-lg-1-2">
+        {% if page.media.images|first %}
+            <a href="{{ page.url }}">{{ page.media.images|first.cropZoom(400,200).html("","","pure-img flex-img") }}</a>
+        {% else %}
+            <a href="{{ page.url }}"><img class="pure-img flex-img" src="{{ url('theme://images/leaf_logo.png') }}" /></a>
+        {% endif %}
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-2">
+            <h2 class="blog-title"><a href="{{ page.url }}">{{ page.title }}</a></h2>
+            <time class="blog-date" datetime="{{ page.date | date("Y-m-d") }}">{{ page.date|date("d M Y") }}<span class="blog-tags"> | AI | COMPLEXITY | FUTURE</span></time>
+        </div>
+    </div>       
+{% endif %}
